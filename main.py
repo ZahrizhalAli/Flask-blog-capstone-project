@@ -11,7 +11,7 @@ def home():
     return render_template("index.html", posts=data)
 
 
-@app.route("/post/<blog_id>")
+@app.route("/post/<int:blog_id>")
 def get_post(blog_id):
     post_response = requests.get("https://api.npoint.io/b45a3d3518ef5f96d0e6")
     the_post = post_response.json()

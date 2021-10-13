@@ -12,10 +12,14 @@
         <div class="title"><h1>My Blog</h1></div>
            </div>
         <div class="content">
+            {% for p in post: %}
+            {% if p['id'] == blog_id: %}
             <div class="card">
-                <h2>Title</h2>
-                <p>Post Body</p>
+                <h2>{{p['title']}}</h2>
+                <p>{{p['body']}}</p>
             </div>
+            {% endif %}
+            {% endfor %}
 
     </div>
 </div>
