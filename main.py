@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, url_for
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
@@ -57,15 +57,30 @@ def home():
 
 @app.route("/blog/<int:blog_id>")
 def get_blog(blog_id):
-    select_data = None
     data = BlogPost.query.filter_by(id=blog_id).first()
 
     return render_template("post.html", p=data)
 
 
-@app.route('/edit/<int:blog_id>')
+@app.route('/edit/<int:blog_id>', methods=['GET', 'POST'])
 def edit_post(blog_id):
-    return ("<h1>Test</h1>")
+    data = BlogPost.query.get(blog_id)
+    post_form = CreatePostForm(
+        title=data.title,
+        subtitle=data.subtitle,
+        img_url=data.img_url,
+        author=data.author,
+        body=data.body
+    )
+    if post_form.validate_on_submit():
+        data.title = post_form.title.data
+        data.subtitle = post_form.subtitle.data
+        data.img_url = post_form.img_url.data
+        data.author = post_form.author.data
+        data.body = post_form.body.data
+        db.session.commit()
+        return redirect(url_for("get_blog", blog_id=blog_id))
+    return render_template('make-post.html', form=post_form)
 
 
 @app.route('/new-post', methods=['POST', 'GET'])
@@ -105,6 +120,14 @@ def send_email(name, email, phone, message):
         connection.starttls()
         connection.login(OWN_EMAIL, OWN_PASSWORD)
         connection.sendmail(OWN_EMAIL, OWN_EMAIL, email_message)
+
+
+@app.route('/delete/<int:blog_id>', methods=['POST', 'GET'])
+def delete_post(blog_id):
+    book_to_delete = BlogPost.query.get(blog_id)
+    db.session.delete(book_to_delete)
+    db.session.commit()
+    return redirect('/')
 
 
 if __name__ == "__main__":
