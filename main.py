@@ -12,7 +12,6 @@ from forms import CreatePostForm, RegisterForm, LoginForm
 import datetime
 import smtplib
 
-
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
 ckeditor = CKEditor(app)
@@ -49,22 +48,31 @@ def admin_only(f):
 
 
 # CONFIGURE TABLE
-class BlogPost(db.Model):
+class User(UserMixin, db.Model):
+    __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
+    children = relationship('BlogPost', back_populates="author")
+
+    email = db.Column(db.String(100), unique=True)
+    password = db.Column(db.String(100))
+    name = db.Column(db.String(1000))
+
+
+class BlogPost(db.Model):
+    __tablename__ = 'blog_post'
+    id = db.Column(db.Integer, primary_key=True)
+    # bidirectional one-to-many
+    author_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    author = relationship('User', back_populates="children")
+
     title = db.Column(db.String(250), unique=True, nullable=False)
     subtitle = db.Column(db.String(250), nullable=False)
     date = db.Column(db.String(250), nullable=False)
     body = db.Column(db.Text, nullable=False)
-    author = db.Column(db.String(250), nullable=False)
     img_url = db.Column(db.String(250), nullable=False)
 
 
-class User(UserMixin, db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(100), unique=True)
-    password = db.Column(db.String(100))
-    name = db.Column(db.String(1000))
-# db.create_all()
+db.create_all()
 
 
 @app.route('/')
@@ -138,7 +146,7 @@ def edit_post(blog_id):
         title=data.title,
         subtitle=data.subtitle,
         img_url=data.img_url,
-        author=data.author,
+        author=data.author.name,
         body=data.body
     )
     if post_form.validate_on_submit():
@@ -168,7 +176,7 @@ def new_post():
     day = x.strftime("%d")
     date = f"{month} {day}, {year}"
     if post_form.validate_on_submit():
-        new_entry = BlogPost(title=title, subtitle=subtitle, author=author, img_url=img_url, body=body, date=date)
+        new_entry = BlogPost(title=title, subtitle=subtitle, author_id=current_user.id, img_url=img_url, body=body, date=date)
         db.session.add(new_entry)
         db.session.commit()
         return redirect('/')
