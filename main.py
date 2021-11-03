@@ -153,7 +153,6 @@ def edit_post(blog_id):
         data.title = post_form.title.data
         data.subtitle = post_form.subtitle.data
         data.img_url = post_form.img_url.data
-        data.author = post_form.author.data
         data.body = post_form.body.data
         db.session.commit()
         return redirect(url_for("get_blog", blog_id=blog_id))
@@ -167,7 +166,6 @@ def new_post():
     post_form = CreatePostForm()
     title = post_form.title.data
     subtitle = post_form.subtitle.data
-    author = post_form.author.data
     img_url = post_form.img_url.data
     body = post_form.body.data
     x = datetime.datetime.now()
