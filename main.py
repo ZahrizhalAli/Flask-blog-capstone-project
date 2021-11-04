@@ -14,13 +14,13 @@ import smtplib
 import os
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 ckeditor = CKEditor(app)
 Bootstrap(app)
 
 # CONNECT TO DB
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://irhcldntprtjlq:2d881f7270c816636ec26f75d8fcfa806f4fc7af972fa5f3c7332854d2f2bef1@ec2-34-194-100-156.compute-1.amazonaws.com:5432/d9dvsac0hg1979'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', "sqlite:///posts.db")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
