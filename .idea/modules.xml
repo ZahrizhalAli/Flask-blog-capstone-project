@@ -3,8 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/blog-capstone-project.iml" filepath="$PROJECT_DIR$/.idea/blog-capstone-project.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../day-63-sqlite/.idea/day-63-sqlite.iml" filepath="$PROJECT_DIR$/../day-63-sqlite/.idea/day-63-sqlite.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../flask-auth-start/.idea/flask-auth-start.iml" filepath="$PROJECT_DIR$/../flask-auth-start/.idea/flask-auth-start.iml" />
     </modules>
   </component>
 </project>

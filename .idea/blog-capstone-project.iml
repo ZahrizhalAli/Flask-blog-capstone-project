@@ -6,7 +6,5 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="day-63-sqlite" />
-    <orderEntry type="module" module-name="flask-auth-start" />
   </component>
 </module>
