@@ -19,7 +19,7 @@ ckeditor = CKEditor(app)
 Bootstrap(app)
 
 # CONNECT TO DB
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', "sqlite:///posts.db")
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://hqptgfencdplor:5b06ffd1d85b6b6dfea917c1bb85a155b3c724c534bbf951596474364cefc3c2@ec2-54-159-244-207.compute-1.amazonaws.com:5432/dcje59r4i3tsvc'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
